@@ -477,19 +477,18 @@ The SPICE deck looks like as follows:
 
 Here the SPICE deck is editted according to the layout to run transient analysis as follows:
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice1.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185694462-5122a0be-ebec-46c5-a80b-7f271b482056.png)
+
 
 The following command is used to invoke ngspice tool:
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice1_1.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185694083-5c618f3e-c16d-4761-a99b-68e83dc83f52.png)
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice2.PNG)
 
-To plot transient analysis:
 
           plot y vs time a
           
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice4.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185694376-4eb24949-dc81-4950-bd49-a6ccd1164723.png)
 
 The following timing parameters are calculated.
 

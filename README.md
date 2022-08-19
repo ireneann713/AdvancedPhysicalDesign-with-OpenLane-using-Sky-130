@@ -382,297 +382,359 @@ Open the `picorv32a.placement.def` in `magic`
             1. Slew_x = difference between slew_high_x_thr and slew_low_x_thr
             1. Delay_x = difference between out_x_thr and in_x_thr
 
-#### SPICE Deck Creation
+## Day3: Design Library Cells
 
-![](./images/sp1.png)
+First part is to create SPICE deck. Spice deck is the connectivity information about netlist.
 
-#### Simulation in ngspce
+SPICE Deck contains
 
-![](./images/sp2.png)
-![](./images/sp3.png)
+    1. Component connectivity
+    
+    2. Component values (W/L),load capacitance, Input and supply voltage
+    
+    3. Identify nodes
+    
+    4. Name the nodes
+    
+    5. Simulation commands
+    
+    6. Describe model file
+    
+### Switching Threshold of CMOS
 
-#### VTC 
+Switching threshold is the point where Vin=Vout.This depends on the W/L ratio of the PMOS and NMOS transistor.
 
-![](./images/vtc1.png)
+### 16-mask CMOS process
 
-#### VTC with 2.5 x W (@.5 times channel width of pmos)
+  1. Select a substrate- Selecting the base layer in which other regions are made.
+
+  2. Create active region for transistors-Create an insulator layer using SiO2 and Si3N2.Pockets are created using photoresist and lithography process.
+
+  3. Formation of N-well and P-well formation-Ion Implantation is used for this purpose.
+
+  4. Creating Gate terminal- For desired threshold,doping Concentration and oxide thickness needs to be set.
+
+  5. Lightly Doped Drain (LDD) formation- LDD is done to avoid short channel effect and hot electron effect.
+
+  6. Source and Drain formation- Formation of the source and drain.
+
+  7. Contacts and local interconnect creation- SiO2 removed using HF etching. Titanium is deposited using sputtering.
+
+  8. Higher Level metal layer formation- Upper metal laters are deposited.
 
 
-![](./images/vtc2.png)
+### CMOS INVERTER ngspice SIMULATIONS
 
-From the above we can see that the switching threshold of the latter is exactly midway with reference to Vdd and is slightly shifted to the left with the former
+The tech file for the magic present in the pdk directory is copied to the vsdstdcelldesign directory.
 
-At the Switching threshold pmos and nmos drain add up to zero. Using this condition and the Drain Current equation we can fix a value for W/L to obtain the required switching voltage
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/stdcell1.PNG)
+
+To view the layout on the magic, the following command is used.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/stdcell2.PNG)
+     
+The layout of the inverter appears in the magic:       
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic1.PNG)
+
+When the polysilicion crosses and n diffusion, its an NMOS.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic2.PNG)
+
+As in above figure, keep the mouse on the highlighted region and press 's'. Type 'what" on tkon window, and we can see that the above statement holds true.
+
+When the polysilicion crosses and p diffusion, its an PMOS.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic3.PNG)
+
+As in above figure, keep the mouse on the highlighted region and press 's'. Type 'what' on tkon window, and we can see that the above statement holds true.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic4.PNG)
+
+As in above figure, keep the mouse on the highlighted region and press 's'. Type 'what' on tkon window, and see that the output Y is selected.
+
+
+### PEX Extraction with Magic
+
+To extract the parasitic spice file, an extraction file needs to be created and that can be done by typing following command on tkon:
         
-#### Transient Simulation
+        extract all
+        
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic7.PNG)
 
-![](./images/invdyn.png)
+If we check the corresponding directory we can see that the extraction file is created (sky130inv.ext)
 
-![](./images/invdyn2.png)
 
-![](./images/invdyn3.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic8.PNG)
 
-From this the thresholds timings are characterised
+After generating the extracted file we need to output the .ext file to a spice file. The following commands can be used:
 
-### Custom Design of SKY130 Standard cell
+    ext2spice cthresh 0 rthresh 0
+    ext2spice
+    
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic9.PNG)
 
-Refer [Nickson-Jose Git Repo](https://github.com/nickson-jose/vsdstdcelldesign) for the files
+The SPICE deck looks like as follows:
 
-The objective is to insert the custom designed inverter into the openlane flow 
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/stdcell5.PNG)
 
-Open the `sky130_inv.mag` file in `magic`
+Here the SPICE deck is editted according to the layout to run transient analysis as follows:
 
-![](./images/vsdinv1.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice1.PNG)
 
-- DRC is checked. To place in the openLANE flow we need the LEF File only.
+The following command is used to invoke ngspice tool:
 
-- LEF is the Library Exchange Format. 
-- It has only the information of the metal layers. 
-- It has no information of the function.
-- Because only the metal contacts are sufficient enough to do the placement. 
-- This allows for protection of the IP of the vendor so the buyer cant reverse engineer the design as a single LEF can enumerate to multiple Layouts as the number of possible interconnection keep increasing with intersections and the layers
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice1_1.PNG)
 
-#### SPICE Characterisation
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice2.PNG)
 
-Extract the SPICE file
+To plot transient analysis:
 
-![](./images/q1.png)
+          plot y vs time a
+          
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/ngspice4.PNG)
 
-![](./images/q2.png)
+The following timing parameters are calculated.
 
-Extracted Spice File
+Rise transition delay = Time taken for the output signal to reach from 20%-80% of maximum value.
 
-![](./images/ext1.png)
+Fall transition delay = Time taken for the output signal to reach from 80%-20% of maximum value.
 
-The following test circuit has to be implemented. 
+Cell rise delay = Time difference between 50% of rising output and 50% of falling output.
 
-![](./images/d1.png)
+Cell fall delay = Time difference between 50% of falling output and 50% of rising output.
 
-Edited SPICE Deck
+## Day 4: Timing Analysis and Clock Tree Synthesis
 
-![](./images/a2.png)
+### Extracting LEF file
 
-Ngspice simulation
+LEF file protects the IP. Extract LEF file out of .mag file. The extracted LEF file will be plugged into picorv32a flow.
 
-![](./images/res1.png)
+Certain guidelines need to be followed while making standard cell set:
 
+1.	The input and output port must lie on the intersection of horizontal and vertical tracks.
+2.	Width of the standard cells must be odd multiple of horizontal tracks pitch. Height must be odd multiple of vertical tracks.
 
-![](./images/res2.png)
+Tracks are used during routing stage. Routes are traces of metals. Only over the routes PNR tool can do routing.
 
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4.PNG)
 
-![](./images/res3.png)
+For example,
 
-From the graph manually timing characterisation is done
+li1 layer (X) the horizontal track is at an offset of  0.23 having a pitch of 0.46
 
-#### LEF Extraction 
+li1 layer (Y) the vertical track is at an offset of  0.17 having a pitch of 0.34
 
-To make the standard cells to be used in the PnR the following rules are followed
+These grids are the routes taken for PNR flow. The grid sizes can be changed according to the track definition
 
-- The input and output ports must lie on the vertical and horizontal tracks
-- The width of the standard cell muse be odd multiple of the track pitch
-- The height of the standard cell must be odd multiple of the vertical pitch
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_1.PNG)
 
-`tracks.info` file contains this information
+So if we check the below image, the input and output port and on the intersection of horizontal and vertical tracks. So having the ports on horizontal and vertical tracks ensures that routes can reach the ports from X and Y direction.
 
-![](./images/pitch.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_2.PNG)
 
-Adjust grid accordingly so that the geometry can be interpreted with the track information
+Also if we analyse the below figure, width of the standard cells is odd multiple of horizontal track pitch.
 
-![](./images/grid.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_3.PNG)
 
-![](./images/grid2.png)
+When we extract the lef files ,the ports will be considered as pins.
 
-In the Layout file the ports are defined,as the LEF file requires only ihe information of the ports by using magic `edit>text` 
+To extract the lef file, the following command is used on tckon window.
+      
+      lef write
+      
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_4.PNG)
 
-Extract the lef file
+This will create a new lef file in the corresponding directory with an extension of .lef
 
-![](./images/lefext.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_5.PNG)
 
-Extracted LEF File
+The lef file shows that the ports have been assigned as pins and all the changes that were made in magic has been reflected in here. 
 
-![](./images/lefi.png)
+Generated LEF file:
 
-The standard cell is included in the skywater library
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_6.PNG)
 
-![](./images/lib1.png)
+To plug this LEF file into picorv32a flow,first we need to copy the lef file and the library files into the /design/src folder, so that all design files are in one folder itself. 
 
-Copy the libraries and lef file the the design source folder
+The config.tcl file sets the location where the lef file is present which is needed for the spice extraction.
 
-## Synthesis, Floorplanning with custom standard cell
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_11.PNG)
 
-Edit the config.tcl in the design folder as shown below
+The below command is included to add lef into the flow:
 
-![](./images/con1.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_9.PNG)
 
-In openlane enter the following to include the lef ile
+Run the entire flow and we can see that sky130_vsdinv, is added into the netlist.
 
-Run Synthesis
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_10.PNG)
 
-![](./images/syn1.png)
+We can see this cell in the magic gui once we finish the placement. So if we zoomin we can see sky130_vsdinv.
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_13.PNG)
 
-It can be seen that the added cell is included
+Place the cursor on sky130_vsdinv,press 's'. Type *expand* on tkon window and we can see the connection of that particular cell to the adjacent cells.
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_14.PNG)
 
-## Static Timing Analysis
+### Timing Analysis using OpenSTA
 
-Go to the `/openlane_ROOT/designs/runs/t1/reports/synthesis` directory to see the OpenSTA timing reports
+Initially the slack was neagtive and a huge value.
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/sta1.PNG)
 
-After synthesis the `total negative slack` and `worst negative slack` can be seen 
+OpenSTA tool is used to do STA analysis. Negative slack is not ideal for any design,so the slack values have to be optimized and bought up to a positive value.
+The STA configuration file and run it to find the timing parameters.
 
-![](./images/b1.png)
+The config file looks like the following:
 
-Maximum Slack violation observed
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/sta%20config.PNG)
 
-![](./images/b2.png)
+Some changes need to be done in the synthesis.tcl file by setting some of the environmental values.
+For example,
+SYNTH_STRATEGY value was 'AREA 0'. Area was the preference. This can be changed to 'DELAY 1' such that delay becomes the preference.
+Also, SYNTH_SIZING can be set to 1.
 
-Area of the chip 
-![](./images/ar1.png)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/err2.PNG)
 
-Adjusting the syntesis parameters
-- `SYNTH_STRATEGY` is set as `DELAY 1` to optimise the timing and tradeoff the area
-- `SYNTH_SIZING` to allow including various sizes of the standard cells to optimise the timing
-- Changes are made with the following commands in openlane.
-    ```tcl
-    set ::env(SYNTH_STRATEGY) "DELAY 1"
-    set ::env(SYNTH_SIZING) 1
-	```   
-- The commands can also be included in the cofig.tcl file but the run has to be overwritten
+Once these changes are made, the slack reduces to an acceptable number.
 
-After modification the synthesis reported as follows
+Now the flow needs to be done again. We will invoke the docker and overwrite on the existing file.
 
-![](./images/synthstat2.png)
+The following commands are used after invoking the docker:
 
-We can see that the area is increased and the number of cells are also increased
+    % ./flow.tcl -interactive
+    % package require openlane 0.9
+    % prep -design picorv32a -tag 03-07_15-55 -overwrite
+    
+The switch -overwrite overwrites the existing file 03-07_12-55. Once synthesis is done and timing is under control, we will do the floorplan and placement. The next step will be CTS.
 
-![](./images/s2.png)
+### Clock Tree Synthesis
+The process of connecting clock pins of all sequential cells to the clock net such that clock skew is minimized is called CTS. Clock nets are set as ideal during synthesis and placement. Ideal network means there is no interconnect delys or wire delays are not taken into account. We do so because if we are not setting clock net as ideal, the interconnect delays degrade the clock signal and lead to timing violations, and worst some cells may not get the clock signal.
 
-Maximum Slack
+During CTS, clock buffers and inverters are added to achieve minimal clock skew. These clock buffers are different from normal buffers. CTS buffers have equal rise and fall times. 
 
-![](./images/ms1.png)
+The following command is used to do CTS.
 
-Minimum Slack
+      % run_cts
+     
+Since clock tree is built, now the clocks can be propogated. Post CTS timing analsysis can be done by writing a .db file from lef and def file. Read the .db file along with liberty file, cts netlist,propogate the clocks and get the reports.
 
-![](./images/ms2.png)
+     % read_lef /openLANE_flow/designs/picorv32a/runs/03-07_12-55/tmp/merged.lef
+     % read_def /openLANE_flow/designs/picorv32a/runs/03-07_12-55/results/cts/picorv32a.cts.def
+     % write_db pico.cts.db
+     % read pico.cts.db
+     % read_verilog /openLANE_flow/designs/picorv32a/runs/03-07_12-55/results/synthesis/picorv32a.synthesis_cts.v
+     % read_liberty $::env(LIB_SYNTH_COMPLETE) 
+     % link_design picorv32a
+     % read_sdc ...../src/my_base.sdc
+     % set_propagated_clock [all_clocks]
+     % report_checks -path_delay min_max -format full_clock_expanded -digits 4
+   
+   ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/cts5.PNG)
+    
+After CTS slack is increased. To reduce slack violation we have to edit the variables for clock buffers and replace the buffers. The CTS buffers used in oplane are as shown in figure. 
 
-## Floorplanning and Placement
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/cts2.PNG)
 
-Now `run_floorplan`. This generates a `picorv32a.floorplan.def`
+We can replace some of the buffers with higher driving strength buffers there by improving the slack. Clock tree optimization is achieved by buffer sizing, buffer relocation, gate sizing, level adjustment and High Fanout Nets synthesis (HFNS).
 
-To avoid errors follow the below steps to perform the floorplan and placement
-1. `init_floorplan`
-1. `place_io`
-1. `global_placement_or`
-1. `detailed_placement`
-1. `tap_decap_or`
-1. `detailed_placement`
+## DAY 5: RTL2GDSII
 
-Click here to view the [logs, reports and results](./)
+The following commands perform the synthesis to routing:
+  
+    1.run_synthesis 
+    
+    2.init_floorplan 
+  
+    3.place_io
+  
+    4.global_placement_or
+  
+    5.detailed_placement 
+  
+    6.tap_decap_or detailed_placement
+  
+    7.gen_pdn
+  
+    8.run_routing
+   
+ ### Power Distribution Network
+ 
+The powerplanning is done after the floorplan. But for OpenLANE power planning is done before routing.
 
-DEF File after Placement
+The PDN feature within OpenLANE will create:
 
-![](./images/placement.png)
+  1.Power ring - To the entire core.
+  
+  2.Power halo - Only to any preplaced cells.
 
-### CTS
+  3.Power straps - Power to the centre of the chip.
 
-### Pre-CTS Timing Analysis in OpenRoad
-This CTS is performed on the placement .def file. Since that is the recently run 
+  4.Power rails -Power for the standard cells.
 
-- In openlane type `openroad`
-- Read the lef file
-    - `read_lef /openLANE_flow/designs/picorv32a/runs/t3/tmp/merged.lef`
-- Read the Def file
-    - `read_def /openLANE_flow/designs/picorv32a/runs/t3/results/cts/picorv32a.placement.def`
-- Create the db
-    - `write_db pico_cts_2.db`
-- Preform Analysis using OpenSTA inside openroad
-- `read_db pico_cts_2.db`
-- `read_verilog /openLANE_flow/designs/picorv32a/runs/t3/results/synthesis/picorv32a.v`
-- `read_liberty $::env(LIB_SYNTH_COMPLETE)`
-- `link_design picorv32a`
-- `read_sdc /openLANE_flow/vsdstdcelldesign/extras/my_base.sdc`
-- Set the clock buffer to use from 2
-- `set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]`
-- `set_propagated_clock [all_clocks]`
-- `report_checks -format full_clock_expanded -digits 4`
-- Minimum Slack
-    - ![](./images/mins.png)
-- Maximum Slack
-    - ![](./images/mas.png)
+To generate the power distribution network the following command is used:
 
-Run the CTS and do the Post STA Analysis with the same steps
+     % gen_pdn
 
-Run the CTS using `run_cts`
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/afterpdn.PNG)
 
-A *.def* file after cts is created and an optimised *.v* netlist is created in the synthesis folder
+The pitch of the metal 1 power rails defines the height of the standard cells
 
-Def file after CTS
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/afterpdn1.PNG)
 
-![](./images/cts.png)
+ The horizontal and vertical blue lines show the power and ground network built.
+ 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/pdn2.PNG)
+      
+ ### Routing
+ 
+ The interconnections are made in the routing stage. The signal pins are connected using metal wires. The netlist provides the logical connectivity and certain rules need to be followed (DRC) which is technology dependent. Routing is done in two stages.
+  
+  1.Global route
+  
+  2.Detail route
 
-### PDN
+ROUTING_STRATEGY (0-3) uses Triton-13 engine-faster runtime
 
-- `gen_pdn` - Generate the Power Distribution network
-- The power distrubution network has to take the `design_cts.def` as the input def file.
-- This will create the grid and the straps for the Vdd and the ground. These are placed around the standard cells.
-- The standard cells are designed such that it's height is multiples of the space between the Vdd and the ground rails. Here, the pitch is `2.72`. Only if the above conditions are adhered it is possible to power the standard cells.
-- The power to the chip, enters through the `power pads`. There is each for Vdd and Gnd
-- From the pads, the power enters the `rings`, through the `via`
-- The `straps` are connected to the ring. Vdd straps are connected to the Vdd ring and the Gnd Straps are connected to the Gnd ring. There are horizontal and the vertical straps
-- Now the power has to be supplied from the straps to the standard cells. The straps are connected to the `rails` of the standard cells
-- If macros are present then the straps attach to the `rings` of the macros via the `macro pads` and the pdn for the macro is pre-done.
-- There are definitions for the straps and the railss. In this design straps are at metal layer 4 and 5 and the standard cell rails are at the metal layer 1. Vias connect accross the layers as required.
+ROUTING_STRATEGY (14) uses Triton-14 engine-better DRCs, but more runtime
 
-### Routing
+To run routing in OpenLANE execute the command
+  
+     % run_routing
+ 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route5.PNG) 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route6.PNG)
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/routing.PNG)
+ We can invoke the magic window  and see the result.
+ 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route4.PNG)
+ 
+ So here we can see that all standard cells are placed in the standard cell rows, they are legalized and routed.
+ 
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route1.PNG)
 
-- `run_routing` - To start the routing
-- The options for routing can be set in the `config.tcl` file. 
-- The optimisations in routing can also be done by specifying the routing strategy to use different version of `TritonRoute Engine`. There is a trade0ff between the optimised route and the runtime for routing.
-- For the default setting picorv32a takes approximately 30 minutesaccording to the current version of TritonRoute.
-- This routing stage must have the `CURRENT_DEF` set to `pdn.def`
-- The two stages of routing are performed by the following engines
-    - Global Route : Fast Route
-    - Detailed Route : Triton Route
-- Fast Route generates the routing guides, whereas Triton Route uses the Global Route and then completes the routing with some strategies and optimisations for finding the best possible path connect the pins.
+If we zoom in we can find the sky130_vsdinv, press 's' and type 'what' on tkon window.
 
-![](./images/routing.PNG)
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route2.PNG)
 
-- The routing has been complted without any DRC violations.
-- RC Extraction is done and the SPEF File is generated in the `picorv32a/runs/03-07_16-12/results/routing/picorv32a.spef`
-- The routing guides produced in each stage of the routing is present in the `run/run_name/tmp/routing` directory
-- In the current version of OpenLane (Openlane 0.21), the SPEF Extractor is built-in. So on running the routing the Parasitics are extracted and Post-routing STA is performed.
-- In the older versions of openlane, the SPEF Extraction has to be done manually and the STA has to be performed in Openroad by creating a new db with the new `def` file and the appropriate verilog netlists.
+Type 'expand' on the tkon window, we can see the inverter is conneceted to the adjacent cells. Pink lines represent the connection.
 
-**Final DEF File after routing**
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route3.PNG)
 
-![](./images/picorv32a.def.png)
+### SPEF Extraction
 
-## GDSII
+Standard Parasitic Exchange Format or SPEF file is generated once place and route is completed. SPEF is used for the delay calculation. It contains R,L,C in the ASCII format. SPEF can be used to perform sign-off post-route STA analysis. The parasitics are extracted into a SPEF file using SPEF Extractor. 
 
-GDS Stands for Graphic Design Standard. This is the file that is sent to the foundry and is called "tape-out" 
+### GDSII
+ GDSII is the file given to the fab. The file is in binary format which represent shapes,labels,text about the layout.
+ 
+    % run_magic
+    
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/gds2.PNG)
 
-*Fact- Earlier, the GDS files were written on magnetic tapes and sent out to the foundry and hence the name "tape-out"*
+## Acknowledgements:
 
-In openLane use the command `run_magic`
+Kunal Ghosh, Co-founder (VSD Corp. Pvt. Ltd)
 
-The GDSII file is generated in the `results/magic` directory
-
-Checking DRC using `run_magic_drc`
-
-![](./images/drcf.PNG)
-
-No DRC errors are found.
-
-Opening the GDSII file in `klayout`
-
-![](./images/gdsout.PNG)
-
-## Acknowledgements
-
-- [Kunal Gosh, Founder, VSD Corporation](https://github.com/kunalg123)
-
-- [Nickson Jose, VSD Corporation](https://github.com/nickson-jose)
-
-- [Tim Edwards, eFabless](http://opencircuitdesign.com/~tim/)
-
+Nickson P Jose, Teaching Assistant (VSD Corp. Pvt. Ltd)
 ## References
 
 - [Openlane](https://github.com/The-OpenROAD-Project)

@@ -300,6 +300,7 @@ Let us change the `VMETAL` and `HMETAL` Layers
 Run the floorplan
 
 ![image](https://user-images.githubusercontent.com/55539862/185607015-667a111e-d048-4736-9bda-151d47ed5ff7.png)
+![image](https://user-images.githubusercontent.com/55539862/185631058-86bb966d-4e7b-4f70-90c9-c9af9fa64d4b.png)
 
 Configuration reflected in the runs folder
 ![runconfig](./images/fprun.PNG)

@@ -150,7 +150,7 @@ Refer
 
 ## OpenLane Directory Structure
 Open the openlane directory
-![enter image description here](./images/dirstr.png)
+![image](https://user-images.githubusercontent.com/55539862/185565067-e446ef45-e9bb-4839-9f08-e2c2cf443aa8.png)
 
  - The ```designs``` folder contains all the designs provided by Efabless. This is the directory from which OpenLane fetches the design.  Consider the picorv32a design. Upon design preparation a runs folder is added. Within the folder containing the date resides the configuration, results, reports and other files that are use in the run. 
   

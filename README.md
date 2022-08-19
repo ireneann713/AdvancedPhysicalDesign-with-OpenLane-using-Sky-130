@@ -289,21 +289,14 @@ Floorplanning involves the following stages
 
 Command: `run_floorplan`
 
-Let us change the `VMETAL` and `HMETAL` Layers
 
-*Note : In openlane the layer numbers are 1 less than the actual layer*
-
-[Right: Modifed Configuration in design, Left: Default Config in openlane]
-
-![config](./images/floorplanconfig.PNG)
 
 Run the floorplan
 
 ![image](https://user-images.githubusercontent.com/55539862/185607015-667a111e-d048-4736-9bda-151d47ed5ff7.png)
 ![image](https://user-images.githubusercontent.com/55539862/185631058-86bb966d-4e7b-4f70-90c9-c9af9fa64d4b.png)
 
-Configuration reflected in the runs folder
-![runconfig](./images/fprun.PNG)
+
 
 This command generated the `picorv32a.floorplan.def` file in the `./results/floorplan` directory
 
@@ -313,13 +306,9 @@ Open the file in magic
 
 In the `tkcon` window read the lef and def file as follows. The `lef` file is present in the `tmp` directory as `merged.lef` 
 
-![](./images/fplef.png)
+![image](https://user-images.githubusercontent.com/55539862/185637387-019689d4-4a86-4b8a-86da-0a848803bec6.png)
 
-![](./images/fpout1.png)
 
-Zoom in view that the pins are equally spaced
-
-![](./images/fpout.png)
 
 - Tap calls are used to avoid Latchup connections
 - They connect the nwell to the Vdd and Substrate to Gnd

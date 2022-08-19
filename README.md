@@ -182,7 +182,7 @@ Set the package required by OpenLane.\
 
 ```package require openlane 0.9```
 
-![OpenLane 1](./images/o1.png)
+![image](https://user-images.githubusercontent.com/55539862/185571688-cfc4f697-f069-4367-99a8-fb089df150e3.png)
 
 ### Design Preparation 
 

@@ -205,7 +205,7 @@ set ::env(CURRENT_DEF) /path/to/the/required/def/file
 - The `def` files of every  stage can be found in the `runs>results>stage_name>design_stage.def` path. 
 - These `def` files can be opened with `magic` by using the `sky130A.tech` as the technology file and the `lef` file from the `tmp` directory if required.
 
-![Preparation](./images/prep.png)
+
 
 ### Configuration Priority
 
@@ -234,10 +234,7 @@ View the synthesis statistics
 
 The STA Reports can be viewed from the Reports folder.
 
-The openSTA tool generated the timing reports. It can be seen from below that 
 
-- total negative slack = -759.46
-- worst negative slack =  -24.89
 ## Synthesised Netlist
 ![image](https://user-images.githubusercontent.com/55539862/185587376-979069d6-e447-4fb8-beeb-40432b9edf00.png)
 ### Key concepts

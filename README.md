@@ -230,7 +230,7 @@ OpenLane invokes the following
 
 View the synthesis statistics
 
-![Synthesis stats](./images/synthstat.png)
+![image](https://user-images.githubusercontent.com/55539862/185582943-d27302ed-9f57-4b81-9e75-05d5788f0d37.png)
 
 The STA Reports can be viewed from the Reports folder.
 
@@ -238,9 +238,8 @@ The openSTA tool generated the timing reports. It can be seen from below that
 
 - total negative slack = -759.46
 - worst negative slack =  -24.89
-
-![synthesis complete](./images/synth.png)
-
+## Synthesised Netlist
+![image](https://user-images.githubusercontent.com/55539862/185587376-979069d6-e447-4fb8-beeb-40432b9edf00.png)
 ### Key concepts
 
 #### Utilisation Factor 

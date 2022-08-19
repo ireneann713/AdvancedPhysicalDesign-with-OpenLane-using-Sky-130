@@ -425,31 +425,28 @@ Switching threshold is the point where Vin=Vout.This depends on the W/L ratio of
 
 ### CMOS INVERTER ngspice SIMULATIONS
 
-The tech file for the magic present in the pdk directory is copied to the vsdstdcelldesign directory.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/stdcell1.PNG)
 
 To view the layout on the magic, the following command is used.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/stdcell2.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185683120-0f3a9e6f-ad60-471a-a927-31bc03145490.png)
      
 The layout of the inverter appears in the magic:       
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic1.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185683001-41553093-0d6d-498e-afb1-7612a8b26bdc.png)
 
 When the polysilicion crosses and n diffusion, its an NMOS.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic2.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185683465-8ec0bfa5-9d8f-464f-9779-5fbf8a9c2a4f.png)
 
 As in above figure, keep the mouse on the highlighted region and press 's'. Type 'what" on tkon window, and we can see that the above statement holds true.
 
 When the polysilicion crosses and p diffusion, its an PMOS.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic3.PNG)
-
+![image](https://user-images.githubusercontent.com/55539862/185683636-13f82e6a-5481-4a50-a3d2-3ede81c46bd0.png)
 As in above figure, keep the mouse on the highlighted region and press 's'. Type 'what' on tkon window, and we can see that the above statement holds true.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic4.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185683816-bbdfc40d-3245-4846-8d19-d6c021a0ea95.png)
 
 As in above figure, keep the mouse on the highlighted region and press 's'. Type 'what' on tkon window, and see that the output Y is selected.
 
@@ -460,23 +457,23 @@ To extract the parasitic spice file, an extraction file needs to be created and 
         
         extract all
         
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic7.PNG)
+
 
 If we check the corresponding directory we can see that the extraction file is created (sky130inv.ext)
 
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic8.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185684295-26c6319e-da94-4879-b34e-f531d9b42133.png)
 
 After generating the extracted file we need to output the .ext file to a spice file. The following commands can be used:
 
     ext2spice cthresh 0 rthresh 0
     ext2spice
     
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/magic9.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185684389-b9a1014b-a66c-4ba9-87e8-b2f7051367e2.png)
 
 The SPICE deck looks like as follows:
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/stdcell5.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185684756-63c4d386-fa4e-4a13-8979-2795198653db.png)
 
 Here the SPICE deck is editted according to the layout to run transient analysis as follows:
 

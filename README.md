@@ -534,6 +534,13 @@ When we extract the lef files ,the ports will be considered as pins.
 
 To extract the lef file, the following command is used on tckon window.
 
+  lef write 
+
+![image](https://user-images.githubusercontent.com/55539862/185735002-cb356941-f00d-4e17-b1fd-be64a6eb402f.png)
+
+This will create a new lef file in the corresponding directory with an extension of .lef
+
+
 ## Acknowledgements:
 
 Kunal Ghosh, Co-founder (VSD Corp. Pvt. Ltd)

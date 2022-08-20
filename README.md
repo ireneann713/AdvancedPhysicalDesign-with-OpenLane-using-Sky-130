@@ -540,6 +540,19 @@ To extract the lef file, the following command is used on tckon window.
 
 This will create a new lef file in the corresponding directory with an extension of .lef
 
+![image](https://user-images.githubusercontent.com/55539862/185737429-8b27bf16-256b-47d4-a435-fb7b793c3841.png)
+
+The lef file shows that the ports have been assigned as pins and all the changes that were made in magic has been reflected in here.
+
+Generated LEF file:
+
+![image](https://user-images.githubusercontent.com/55539862/185737512-4805e4d1-e86b-4cdb-8171-62d73977674b.png)
+
+
+To plug this LEF file into picorv32a flow,first we need to copy the lef file and the library files into the /design/src folder, so that all design files are in one folder itself. 
+
+The config.tcl file sets the location where the lef file is present which is needed for the spice extraction.
+
 
 ## Acknowledgements:
 

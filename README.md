@@ -504,6 +504,35 @@ Cell fall delay = Time difference between 50% of falling output and 50% of risin
 
 ### Extracting LEF file
 
+LEF file protects the IP. Extract LEF file out of .mag file. The extracted LEF file will be plugged into picorv32a flow.
+
+Certain guidelines need to be followed while making standard cell set:
+
+1.	The input and output port must lie on the intersection of horizontal and vertical tracks.
+2.	Width of the standard cells must be odd multiple of horizontal tracks pitch. Height must be odd multiple of vertical tracks.
+
+Tracks are used during routing stage. Routes are traces of metals. Only over the routes PNR tool can do routing.
+
+![image](https://user-images.githubusercontent.com/55539862/185734357-8cd10f22-9a23-4cef-af83-f029b344b473.png)
+
+For example,
+
+li1 layer (X) the horizontal track is at an offset of  0.23 having a pitch of 0.46
+
+li1 layer (Y) the vertical track is at an offset of  0.17 having a pitch of 0.34
+
+These grids are the routes taken for PNR flow. The grid sizes can be changed according to the track definition
+
+![image](https://user-images.githubusercontent.com/55539862/185734756-a0ca3bec-6614-4fb6-9cb4-2eb1c92fb8e0.png)![image](https://user-images.githubusercontent.com/55539862/185734785-2a86cdd9-1371-4cbd-91c9-06d048bcb375.png)
+
+
+So if we check the below image, the input and output port and on the intersection of horizontal and vertical tracks. So having the ports on horizontal and vertical tracks ensures that routes can reach the ports from X and Y direction.
+
+![image](https://user-images.githubusercontent.com/55539862/185734870-8f5fa24f-a77a-4f5a-b3cc-0715d258e231.png)
+
+When we extract the lef files ,the ports will be considered as pins.
+
+To extract the lef file, the following command is used on tckon window.
 
 ## Acknowledgements:
 

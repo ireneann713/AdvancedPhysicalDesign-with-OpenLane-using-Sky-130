@@ -552,7 +552,54 @@ Generated LEF file:
 To plug this LEF file into picorv32a flow,first we need to copy the lef file and the library files into the /design/src folder, so that all design files are in one folder itself. 
 
 The config.tcl file sets the location where the lef file is present which is needed for the spice extraction.
+The config.tcl file sets the location where the lef file is present which is needed for the spice extraction.
 
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_11.PNG)
+
+The below command is included to add lef into the flow:
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_9.PNG)
+
+Run the entire flow and we can see that sky130_vsdinv, is added into the netlist.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_10.PNG)
+
+We can see this cell in the magic gui once we finish the placement. So if we zoomin we can see sky130_vsdinv.
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_13.PNG)
+
+Place the cursor on sky130_vsdinv,press 's'. Type *expand* on tkon window and we can see the connection of that particular cell to the adjacent cells.
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_14.PNG)
+
+### Timing Analysis using OpenSTA
+
+Initially the slack was neagtive and a huge value.
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/sta1.PNG)
+
+OpenSTA tool is used to do STA analysis. Negative slack is not ideal for any design,so the slack values have to be optimized and bought up to a positive value.
+The STA configuration file and run it to find the timing parameters.
+
+The config file looks like the following:
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/sta%20config.PNG)
+
+Some changes need to be done in the synthesis.tcl file by setting some of the environmental values.
+For example,
+SYNTH_STRATEGY value was 'AREA 0'. Area was the preference. This can be changed to 'DELAY 1' such that delay becomes the preference.
+Also, SYNTH_SIZING can be set to 1.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/err2.PNG)
+
+Once these changes are made, the slack reduces to an acceptable number.
+
+Now the flow needs to be done again. We will invoke the docker and overwrite on the existing file.
+
+The following commands are used after invoking the docker:
+
+    % ./flow.tcl -interactive
+    % package require openlane 0.9
+    % prep -design picorv32a -tag 03-07_15-55 -overwrite
+    
+The switch -overwrite overwrites the existing file 03-07_12-55. Once synthesis is done and timing is under control, we will do the floorplan and placement. The next step will be CTS.
 
 ## Acknowledgements:
 

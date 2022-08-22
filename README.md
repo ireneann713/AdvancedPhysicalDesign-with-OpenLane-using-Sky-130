@@ -580,7 +580,7 @@ For example,
 SYNTH_STRATEGY value was 'AREA 0'. Area was the preference. This can be changed to 'DELAY 1' such that delay becomes the preference.
 Also, SYNTH_SIZING can be set to 1.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/err2.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185892844-fb65866e-0840-445e-bbaa-a43c8b31d96e.png)
 
 Once these changes are made, the slack reduces to an acceptable number.
 
@@ -592,7 +592,131 @@ The following commands are used after invoking the docker:
     % package require openlane 0.9
     % prep -design picorv32a -tag 03-07_15-55 -overwrite
     
+
 The switch -overwrite overwrites the existing file 03-07_12-55. Once synthesis is done and timing is under control, we will do the floorplan and placement. The next step will be CTS.
+
+### Clock Tree Synthesis
+The process of connecting clock pins of all sequential cells to the clock net such that clock skew is minimized is called CTS. Clock nets are set as ideal during synthesis and placement. Ideal network means there is no interconnect delys or wire delays are not taken into account. We do so because if we are not setting clock net as ideal, the interconnect delays degrade the clock signal and lead to timing violations, and worst some cells may not get the clock signal.
+
+During CTS, clock buffers and inverters are added to achieve minimal clock skew. These clock buffers are different from normal buffers. CTS buffers have equal rise and fall times. 
+
+The following command is used to do CTS.
+
+      % run_cts
+     
+Since clock tree is built, now the clocks can be propogated. Post CTS timing analsysis can be done by writing a .db file from lef and def file. Read the .db file along with liberty file, cts netlist,propogate the clocks and get the reports.
+
+     % read_lef /openLANE_flow/designs/picorv32a/runs/03-07_12-55/tmp/merged.lef
+     % read_def /openLANE_flow/designs/picorv32a/runs/03-07_12-55/results/cts/picorv32a.cts.def
+     % write_db pico.cts.db
+     % read pico.cts.db
+     % read_verilog /openLANE_flow/designs/picorv32a/runs/03-07_12-55/results/synthesis/picorv32a.synthesis_cts.v
+     % read_liberty $::env(LIB_SYNTH_COMPLETE) 
+     % link_design picorv32a
+     % read_sdc ...../src/my_base.sdc
+     % set_propagated_clock [all_clocks]
+     % report_checks -path_delay min_max -format full_clock_expanded -digits 4
+   
+  
+    
+After CTS slack is increased. To reduce slack violation we have to edit the variables for clock buffers and replace the buffers. The CTS buffers used in oplane are as shown in figure. 
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/cts2.PNG)
+
+We can replace some of the buffers with higher driving strength buffers there by improving the slack. Clock tree optimization is achieved by buffer sizing, buffer relocation, gate sizing, level adjustment and High Fanout Nets synthesis (HFNS).
+
+## DAY 5: RTL2GDSII
+
+The following commands perform the synthesis to routing:
+  
+    1.run_synthesis 
+    
+    2.init_floorplan 
+  
+    3.place_io
+  
+    4.global_placement_or
+  
+    5.detailed_placement 
+  
+    6.tap_decap_or detailed_placement
+  
+    7.gen_pdn
+  
+    8.run_routing
+   
+ ### Power Distribution Network
+ 
+The powerplanning is done after the floorplan. But for OpenLANE power planning is done before routing.
+
+The PDN feature within OpenLANE will create:
+
+  1.Power ring - To the entire core.
+  
+  2.Power halo - Only to any preplaced cells.
+
+  3.Power straps - Power to the centre of the chip.
+
+  4.Power rails -Power for the standard cells.
+
+To generate the power distribution network the following command is used:
+
+     % gen_pdn
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/afterpdn.PNG)
+
+The pitch of the metal 1 power rails defines the height of the standard cells
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/afterpdn1.PNG)
+
+ The horizontal and vertical blue lines show the power and ground network built.
+ 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/pdn2.PNG)
+      
+ ### Routing
+ 
+ The interconnections are made in the routing stage. The signal pins are connected using metal wires. The netlist provides the logical connectivity and certain rules need to be followed (DRC) which is technology dependent. Routing is done in two stages.
+  
+  1.Global route
+  
+  2.Detail route
+
+ROUTING_STRATEGY (0-3) uses Triton-13 engine-faster runtime
+
+ROUTING_STRATEGY (14) uses Triton-14 engine-better DRCs, but more runtime
+
+To run routing in OpenLANE execute the command
+  
+     % run_routing
+ 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route5.PNG) 
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route6.PNG)
+ ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/routing.PNG)
+ 
+ 
+ So here we can see that all standard cells are placed in the standard cell rows, they are legalized and routed.
+ 
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route1.PNG)
+
+If we zoom in we can find the sky130_vsdinv, press 's' and type 'what' on tkon window.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route2.PNG)
+
+Type 'expand' on the tkon window, we can see the inverter is conneceted to the adjacent cells. Pink lines represent the connection.
+
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route3.PNG)
+
+### SPEF Extraction
+
+Standard Parasitic Exchange Format or SPEF file is generated once place and route is completed. SPEF is used for the delay calculation. It contains R,L,C in the ASCII format. SPEF can be used to perform sign-off post-route STA analysis. The parasitics are extracted into a SPEF file using SPEF Extractor. 
+
+### GDSII
+ GDSII is the file given to the fab. The file is in binary format which represent shapes,labels,text about the layout.
+ 
+    % run_magic
+    
+![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/gds2.PNG)
+
 
 ## Acknowledgements:
 

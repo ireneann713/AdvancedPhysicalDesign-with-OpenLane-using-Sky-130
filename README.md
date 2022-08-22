@@ -316,7 +316,7 @@ In the `tkcon` window read the lef and def file as follows. The `lef` file is pr
 
 Floorplan Design Exchange File
 
-![](./images/fp2.png)
+
 
 ## Placement 
 - In this steps the standard cells are placed in the floorplanned design
@@ -687,23 +687,28 @@ ROUTING_STRATEGY (14) uses Triton-14 engine-better DRCs, but more runtime
 To run routing in OpenLANE execute the command
   
      % run_routing
+     
+     ![image](https://user-images.githubusercontent.com/55539862/185938644-52a2c1ff-e240-4297-98c2-301535e8f782.png)
+
  
- ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route5.PNG) 
- ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route6.PNG)
- ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/routing.PNG)
- 
+
  
  So here we can see that all standard cells are placed in the standard cell rows, they are legalized and routed.
  
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route1.PNG)
+ ![image](https://user-images.githubusercontent.com/55539862/185938443-70ac85ca-4c85-458a-91da-c5ed4000fbfc.png)
+
 
 If we zoom in we can find the sky130_vsdinv, press 's' and type 'what' on tkon window.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route2.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185938303-353d5181-4ed8-44ff-9ad2-8cf02ea28503.png)
+
+
 
 Type 'expand' on the tkon window, we can see the inverter is conneceted to the adjacent cells. Pink lines represent the connection.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/route3.PNG)
+![image](https://user-images.githubusercontent.com/55539862/185938146-271275c0-c55e-40a5-89bc-6c67272f9f29.png)
+
+
 
 ### SPEF Extraction
 
@@ -714,7 +719,8 @@ Standard Parasitic Exchange Format or SPEF file is generated once place and rout
  
     % run_magic
     
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/gds2.PNG)
+
+![image](https://user-images.githubusercontent.com/55539862/185937835-0b80ba0f-e724-426f-85c1-79b22e326178.png)
 
 
 ## Acknowledgements:

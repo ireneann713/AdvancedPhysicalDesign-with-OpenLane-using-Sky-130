@@ -551,10 +551,7 @@ Generated LEF file:
 
 To plug this LEF file into picorv32a flow,first we need to copy the lef file and the library files into the /design/src folder, so that all design files are in one folder itself. 
 
-The config.tcl file sets the location where the lef file is present which is needed for the spice extraction.
-The config.tcl file sets the location where the lef file is present which is needed for the spice extraction.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_11.PNG)
 
 The below command is included to add lef into the flow:
 
@@ -564,11 +561,7 @@ Run the entire flow and we can see that sky130_vsdinv, is added into the netlist
 
 ![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_10.PNG)
 
-We can see this cell in the magic gui once we finish the placement. So if we zoomin we can see sky130_vsdinv.
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_13.PNG)
 
-Place the cursor on sky130_vsdinv,press 's'. Type *expand* on tkon window and we can see the connection of that particular cell to the adjacent cells.
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_14.PNG)
 
 ### Timing Analysis using OpenSTA
 

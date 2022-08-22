@@ -571,9 +571,8 @@ Initially the slack was neagtive and a huge value.
 OpenSTA tool is used to do STA analysis. Negative slack is not ideal for any design,so the slack values have to be optimized and bought up to a positive value.
 The STA configuration file and run it to find the timing parameters.
 
-The config file looks like the following:
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/sta%20config.PNG)
+
 
 Some changes need to be done in the synthesis.tcl file by setting some of the environmental values.
 For example,

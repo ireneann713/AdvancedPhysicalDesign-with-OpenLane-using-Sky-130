@@ -688,9 +688,11 @@ To run routing in OpenLANE execute the command
   
      % run_routing
      
-     ![image](https://user-images.githubusercontent.com/55539862/185938644-52a2c1ff-e240-4297-98c2-301535e8f782.png)
 
+
+   
  
+![image](https://user-images.githubusercontent.com/55539862/185938644-52a2c1ff-e240-4297-98c2-301535e8f782.png)
 
  
  So here we can see that all standard cells are placed in the standard cell rows, they are legalized and routed.

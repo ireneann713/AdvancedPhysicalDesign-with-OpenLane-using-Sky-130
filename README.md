@@ -617,7 +617,8 @@ Since clock tree is built, now the clocks can be propogated. Post CTS timing ana
      % set_propagated_clock [all_clocks]
      % report_checks -path_delay min_max -format full_clock_expanded -digits 4
    
-  
+  ![image](https://user-images.githubusercontent.com/55539862/186960042-64884b41-0db2-4974-91ac-2f16b4c6f8ef.png)
+
     
 After CTS slack is increased. To reduce slack violation we have to edit the variables for clock buffers and replace the buffers. The CTS buffers used in oplane are as shown in figure. 
 

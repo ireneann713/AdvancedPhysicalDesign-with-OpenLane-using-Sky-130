@@ -335,7 +335,8 @@ Output : `picorv32a.placement.def` file in the `results/placement` and captures 
 
 Open the `picorv32a.placement.def` in `magic`
 
-![image](https://user-images.githubusercontent.com/55539862/185634987-40e26aa8-dec8-40a2-a63c-0c9d164ae6fb.png)
+![image](https://user-images.githubusercontent.com/55539862/186952794-1fccfcc6-9608-4ee6-912d-6a42f6d545c3.png)
+
 
 
  

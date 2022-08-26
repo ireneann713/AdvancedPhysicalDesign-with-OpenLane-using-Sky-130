@@ -560,8 +560,8 @@ The below command is included to add lef into the flow:
 
 Run the entire flow and we can see that sky130_vsdinv, is added into the netlist.
 
-![](https://github.com/Pooja-Chandran/Advanced-PD-using-Sky130-Openlane/blob/main/images/day4_10.PNG)
 
+![image](https://user-images.githubusercontent.com/55539862/186972956-ba26c94c-22db-4f9f-b387-c49e680022df.png)
 
 
 ### Timing Analysis using OpenSTA

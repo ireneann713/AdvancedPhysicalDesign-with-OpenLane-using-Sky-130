@@ -723,8 +723,9 @@ Standard Parasitic Exchange Format or SPEF file is generated once place and rout
  
     % run_magic
     
+![image](https://user-images.githubusercontent.com/55539862/186971701-f449509d-2ce7-407d-912e-0edb0f8e09c0.png)
 
-![image](https://user-images.githubusercontent.com/55539862/185937835-0b80ba0f-e724-426f-85c1-79b22e326178.png)
+
 
 
 ## Acknowledgements:

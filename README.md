@@ -228,9 +228,6 @@ OpenLane invokes the following
 
 
 
-View the synthesis statistics
-
-![image](https://user-images.githubusercontent.com/55539862/185582943-d27302ed-9f57-4b81-9e75-05d5788f0d37.png)
 
 The STA Reports can be viewed from the Reports folder.
 
